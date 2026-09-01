@@ -105,12 +105,12 @@ function extract_single_anchor_href( $content ) {
 /**
  * Is the string a URL?
  *
- * @param string $string String of text.
+ * @param string $url_string String of text.
  * @return bool Whether the string is a URL.
  */
-function is_url( $string ) {
+function is_url( $url_string ) {
 
-	if ( filter_var( $string, FILTER_VALIDATE_URL ) ) {
+	if ( filter_var( $url_string, FILTER_VALIDATE_URL ) ) {
 		return true;
 	}
 
@@ -118,7 +118,7 @@ function is_url( $string ) {
 
 	$idna = new \idna_convert( array( 'idn_version' => '2008' ) );
 
-	if ( filter_var( $idna->encode( $string, 'utf8' ), FILTER_VALIDATE_URL ) ) {
+	if ( filter_var( $idna->encode( $url_string, 'utf8' ), FILTER_VALIDATE_URL ) ) {
 		return true;
 	}
 
