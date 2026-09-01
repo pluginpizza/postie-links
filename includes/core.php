@@ -7,6 +7,7 @@
 
 namespace PluginPizza\PostieLinksAddOn;
 
+use function PluginPizza\PostieLinksAddOn\Helpers\extract_url_from_content;
 use function PluginPizza\PostieLinksAddOn\Helpers\force_https_scheme;
 use function PluginPizza\PostieLinksAddOn\Helpers\is_url;
 use function PluginPizza\PostieLinksAddOn\Helpers\remove_utm_query_args;
@@ -33,9 +34,17 @@ add_filter( 'postie_post_before', __NAMESPACE__ . '\maybe_update_post', 999 );
  */
 function maybe_update_post( $post ) {
 
-	$post_content = trim( wp_strip_all_tags( $post['post_content'], true ) );
+	if ( ! is_array( $post ) ) {
+		return $post;
+	}
 
-	if ( strpos( $post_content, ' ' ) ) {
+	if ( empty( $post['ID'] ) || ! isset( $post['post_content'] ) || ! is_string( $post['post_content'] ) ) {
+		return $post;
+	}
+
+	$post_content = extract_url_from_content( $post['post_content'] );
+
+	if ( '' === $post_content ) {
 		return $post;
 	}
 

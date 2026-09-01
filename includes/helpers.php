@@ -7,16 +7,103 @@
 
 namespace PluginPizza\PostieLinksAddOn\Helpers;
 
+use WP_HTML_Tag_Processor;
+
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 /**
- * Is the string a URL?
+ * Extract a single URL from email or post content.
  *
- * @todo Some mail programs create a hyperlink when inserting a URL. We'll
- *       probably also want to check if the email body contains a hyperlink.
+ * Accepts a lone URL (including line-wrapped URLs) or content whose only
+ * meaningful markup is one `<a href>`. Extra prose returns an empty string.
+ *
+ * @param string $content Post content.
+ * @return string URL or an empty string.
+ */
+function extract_url_from_content( $content ) {
+
+	$href = extract_single_anchor_href( $content );
+
+	if ( '' !== $href ) {
+		return $href;
+	}
+
+	$text = wp_strip_all_tags( $content );
+	$text = str_replace( "\xC2\xA0", ' ', $text );
+	$text = preg_replace( '/[\r\n\t]+/', '', $text );
+	$text = trim( $text );
+
+	if ( '' === $text || false !== strpos( $text, ' ' ) ) {
+		return '';
+	}
+
+	return $text;
+}
+
+/**
+ * Return the href when content is a single anchor and nothing else.
+ *
+ * Uses the WordPress HTML API (WP 6.5+) so attribute decoding and leftover
+ * text detection do not depend on regular expressions.
+ *
+ * @param string $content Post content.
+ * @return string href or an empty string.
+ */
+function extract_single_anchor_href( $content ) {
+
+	$processor    = new WP_HTML_Tag_Processor( $content );
+	$href         = '';
+	$anchor_depth = 0;
+
+	while ( $processor->next_token() ) {
+		$type = $processor->get_token_type();
+
+		if ( '#tag' === $type ) {
+			if ( 'A' !== $processor->get_token_name() ) {
+				continue;
+			}
+
+			if ( $processor->is_tag_closer() ) {
+				if ( $anchor_depth > 0 ) {
+					--$anchor_depth;
+				}
+				continue;
+			}
+
+			$found = $processor->get_attribute( 'href' );
+
+			if ( null === $found || '' === $found ) {
+				continue;
+			}
+
+			if ( '' !== $href ) {
+				return '';
+			}
+
+			$href = (string) $found;
+			++$anchor_depth;
+			continue;
+		}
+
+		if ( '#text' !== $type || 0 !== $anchor_depth ) {
+			continue;
+		}
+
+		$text = str_replace( "\xC2\xA0", ' ', $processor->get_modifiable_text() );
+
+		if ( '' !== trim( $text ) ) {
+			return '';
+		}
+	}
+
+	return $href;
+}
+
+/**
+ * Is the string a URL?
  *
  * @param string $string String of text.
  * @return bool

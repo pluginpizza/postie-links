@@ -3,6 +3,7 @@
  * Plugin Name: Postie Links Add-On
  * Description: An add-on for the <a href="https://wordpress.org/plugins/postie/">Postie</a> plugin. If the email content only contains a URL the post is created with the "Link" format.
  * Version: 1.0.0
+ * Requires at least: 6.5
  * Author: Plugin Pizza, Barry Ceelen
  * Author URI: https://plugin.pizza
  * Plugin URI: https://github.com/pluginpizza/postie-links
