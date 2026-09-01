@@ -39,10 +39,11 @@ function maybe_update_post( $post ) {
 		return $post;
 	}
 
-	$post_content = esc_url( $post_content );
-	$post_content = force_https_scheme( $post_content );
+	$allowed_protocols = array( 'http', 'https' );
+	$post_content      = esc_url_raw( $post_content, $allowed_protocols );
+	$post_content      = force_https_scheme( $post_content );
 
-	if ( ! is_url( $post_content ) ) {
+	if ( empty( $post_content ) || ! is_url( $post_content ) ) {
 		return $post;
 	}
 
@@ -62,6 +63,11 @@ function maybe_update_post( $post ) {
 	 * @var string $post_content URL.
 	 */
 	$post_content = apply_filters( 'pluginpizza_postie_links_url', $post_content );
+	$post_content = esc_url_raw( $post_content, $allowed_protocols );
+
+	if ( empty( $post_content ) || ! is_url( $post_content ) ) {
+		return $post;
+	}
 
 	add_post_meta( $post['ID'], 'pluginpizza_postie_links_url', $post_content );
 
@@ -82,7 +88,7 @@ function maybe_update_post( $post ) {
 	$post_content = sprintf(
 		'<!-- wp:paragraph --><p><a href="%s">%s</a></p><!-- /wp:paragraph -->',
 		esc_url( $post_content ),
-		wp_kses_post( $post_content )
+		esc_html( $post_content )
 	);
 
 	$post['post_content'] = $post_content;
