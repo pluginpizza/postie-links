@@ -1,0 +1,29 @@
+{
+	"authors": [
+		{
+			"name": "Plugin Pizza",
+			"email": "info@plugin.pizza",
+			"homepage": "https://plugin.pizza",
+			"role": "Developer"
+		},
+		{
+			"name": "Barry Ceelen",
+			"email": "b@rryceelen.com",
+			"homepage": "https://github.com/barryceelen",
+			"role": "Developer"
+		}
+	],
+	"description": "An add-on for the Postie plugin. Creates a post with the Link format if the email content only contains a URL.",
+	"homepage": "https://github.com/pluginpizza/postie-links",
+	"keywords": [
+		"email",
+		"post by email",
+		"wordpress"
+	],
+	"license": "GPL-3.0-or-later",
+	"name": "pluginpizza/postie-links",
+	"require": {
+		"composer/installers":"*"
+	},
+	"type": "wordpress-plugin"
+}
