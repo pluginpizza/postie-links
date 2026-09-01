@@ -13,6 +13,11 @@
 			"role": "Developer"
 		}
 	],
+	"config": {
+		"allow-plugins": {
+			"composer/installers": true
+		}
+	},
 	"description": "An add-on for the Postie plugin. Creates a post with the Link format if the email content only contains a URL.",
 	"homepage": "https://github.com/pluginpizza/postie-links",
 	"keywords": [
@@ -23,7 +28,8 @@
 	"license": "GPL-3.0-or-later",
 	"name": "pluginpizza/postie-links",
 	"require": {
-		"composer/installers":"*"
+		"php": ">=7.0",
+		"composer/installers": "^2.0"
 	},
 	"type": "wordpress-plugin"
 }
