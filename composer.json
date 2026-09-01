@@ -31,5 +31,9 @@
 		"php": ">=7.0",
 		"composer/installers": "^2.0"
 	},
+	"scripts": {
+		"lint": "./vendor/bin/phpcs . --standard=phpcs.xml",
+		"lint-fix": "./vendor/bin/phpcbf . --standard=phpcs.xml"
+	},
 	"type": "wordpress-plugin"
 }
