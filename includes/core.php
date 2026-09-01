@@ -78,7 +78,7 @@ function maybe_update_post( $post ) {
 		return $post;
 	}
 
-	add_post_meta( $post['ID'], 'pluginpizza_postie_links_url', $post_content );
+	update_post_meta( $post['ID'], 'pluginpizza_postie_links_url', $post_content );
 
 	/**
 	 * Allows disabling or overriding the post format.
