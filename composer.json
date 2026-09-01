@@ -15,7 +15,8 @@
 	],
 	"config": {
 		"allow-plugins": {
-			"composer/installers": true
+			"composer/installers": true,
+			"dealerdirect/phpcodesniffer-composer-installer": true
 		}
 	},
 	"description": "An add-on for the Postie plugin. Creates a post with the Link format if the email content only contains a URL.",
@@ -30,6 +31,10 @@
 	"require": {
 		"php": ">=7.0",
 		"composer/installers": "^2.0"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+		"wp-coding-standards/wpcs": "^3.0"
 	},
 	"scripts": {
 		"lint": "./vendor/bin/phpcs . --standard=phpcs.xml",
