@@ -13,8 +13,8 @@ use function PluginPizza\PostieLinksAddOn\Helpers\is_url;
 use function PluginPizza\PostieLinksAddOn\Helpers\remove_utm_query_args;
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 // Update the post if the content is deemed to only contain a URL.
@@ -30,7 +30,7 @@ add_filter( 'postie_post_before', __NAMESPACE__ . '\maybe_update_post', 999 );
  * 5. Update the post content to contain a paragraph block with a link element.
  *
  * @param array $post An array of elements that make up a post to insert.
- * @return array
+ * @return array List of post fields.
  */
 function maybe_update_post( $post ) {
 
@@ -57,19 +57,19 @@ function maybe_update_post( $post ) {
 	}
 
 	/**
-	 * Allows disabling the removal of 'utm' query parameters from the URL.
+	 * Filters whether to remove utm_* query parameters from the URL.
 	 *
-	 * @var bool   $strip_utm    Whether to remove the 'utm' parameters.
-	 * @var string $post_content URL.
+	 * @param bool   $strip_utm    Whether to remove the utm_* parameters.
+	 * @param string $post_content URL.
 	 */
 	if ( apply_filters( 'pluginpizza_postie_links_remove_utm', true, $post_content ) ) {
 		$post_content = remove_utm_query_args( $post_content );
 	}
 
 	/**
-	 * Allows filtering the URL before meta, format, and content are updated.
+	 * Filters the URL before meta, format, and content are updated.
 	 *
-	 * @var string $post_content URL.
+	 * @param string $post_content URL.
 	 */
 	$post_content = apply_filters( 'pluginpizza_postie_links_url', $post_content );
 	$post_content = esc_url_raw( $post_content, $allowed_protocols );
@@ -81,11 +81,13 @@ function maybe_update_post( $post ) {
 	update_post_meta( $post['ID'], 'pluginpizza_postie_links_url', $post_content );
 
 	/**
-	 * Allows disabling or overriding the post format.
+	 * Filters the post format applied to a URL-only post.
 	 *
-	 * @var bool   $post_format Post format, return false to not set a post format.
-	 * @var string $url         URL.
-	 * @var array  $post        List of post fields.
+	 * Return a falsy value to skip setting a post format.
+	 *
+	 * @param string|false $post_format  Post format, or false to skip.
+	 * @param string       $post_content URL.
+	 * @param array        $post         List of post fields.
 	 */
 	$post_format = apply_filters( 'pluginpizza_postie_links_post_format', 'link', $post_content, $post );
 
@@ -103,10 +105,10 @@ function maybe_update_post( $post ) {
 	$post['post_content'] = $post_content;
 
 	/**
-	 * Allows filtering the post array before the post is updated.
+	 * Filters the post array before Postie saves it.
 	 *
-	 * @var array  $post         List of post fields with updated 'post_content' item.
-	 * @var string $post_content URL.
+	 * @param array  $post         List of post fields with updated post_content.
+	 * @param string $post_content Post content (paragraph block with the URL).
 	 */
 	$post = apply_filters(
 		'pluginpizza_postie_links_post',

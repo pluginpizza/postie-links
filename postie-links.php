@@ -13,11 +13,13 @@
  */
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
-define( 'PLUGINPIZZA_POSTIE_LINKS_ADDON_INC', plugin_dir_path( __FILE__ ) . 'includes/' );
+if ( ! defined( 'PLUGINPIZZA_POSTIE_LINKS_ADDON_INC' ) ) {
+	define( 'PLUGINPIZZA_POSTIE_LINKS_ADDON_INC', plugin_dir_path( __FILE__ ) . 'includes/' );
+}
 
 require_once PLUGINPIZZA_POSTIE_LINKS_ADDON_INC . 'helpers.php';
 require_once PLUGINPIZZA_POSTIE_LINKS_ADDON_INC . 'core.php';

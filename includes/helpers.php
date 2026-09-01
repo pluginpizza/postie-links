@@ -10,8 +10,8 @@ namespace PluginPizza\PostieLinksAddOn\Helpers;
 use WP_HTML_Tag_Processor;
 
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
 }
 
 /**
@@ -106,7 +106,7 @@ function extract_single_anchor_href( $content ) {
  * Is the string a URL?
  *
  * @param string $string String of text.
- * @return bool
+ * @return bool Whether the string is a URL.
  */
 function is_url( $string ) {
 
@@ -114,7 +114,7 @@ function is_url( $string ) {
 		return true;
 	}
 
-	require_once( PLUGINPIZZA_POSTIE_LINKS_ADDON_INC . 'class-idna-convert.php' );
+	require_once PLUGINPIZZA_POSTIE_LINKS_ADDON_INC . 'class-idna-convert.php';
 
 	$idna = new \idna_convert( array( 'idn_version' => '2008' ) );
 
@@ -129,7 +129,7 @@ function is_url( $string ) {
  * Upgrade an http URL scheme to https.
  *
  * @param string $url URL.
- * @return string
+ * @return string URL with an https scheme when the input used http.
  */
 function force_https_scheme( $url ) {
 
@@ -146,7 +146,7 @@ function force_https_scheme( $url ) {
  * @see https://en.wikipedia.org/wiki/UTM_parameters
  *
  * @param string $url URL.
- * @return string
+ * @return string URL without utm_* query parameters.
  */
 function remove_utm_query_args( $url ) {
 
