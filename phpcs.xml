@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<ruleset name="Postie Links Add-On">
+	<description>WordPress coding standards for Postie Links Add-On.</description>
+
+	<file>.</file>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/includes/class-idna-convert.php</exclude-pattern>
+
+	<arg name="basepath" value="."/>
+	<arg name="extensions" value="php"/>
+	<arg name="colors"/>
+	<arg value="sp"/>
+
+	<config name="minimum_supported_wp_version" value="6.5"/>
+	<config name="text_domain" value="postie-links"/>
+
+	<rule ref="WordPress-Extra"/>
+</ruleset>
